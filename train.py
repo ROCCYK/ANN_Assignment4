@@ -155,14 +155,14 @@ if __name__ == "__main__":
         print(f"\nFinal train loss: {train_loss:0.3f}")
         print(f"Final test loss: {test_loss:0.3f}")
 
-        # Export the tensorflow model
-        lin_reg_export = ExportModule(model=lin_reg, norm_x=norm_x, norm_y=norm_y)
-
-        # Infer model signature
-        predictions = lin_reg_export(x_test)
-        signature = infer_signature(x_test.numpy(), predictions.numpy())
-
-        mlflow.tensorflow.log_model(lin_reg_export, "model", signature=signature)
+        # # Export the tensorflow model
+        # lin_reg_export = ExportModule(model=lin_reg, norm_x=norm_x, norm_y=norm_y)
+        #
+        # # Infer model signature
+        # predictions = lin_reg_export(x_test)
+        # signature = infer_signature(x_test.numpy(), predictions.numpy())
+        #
+        # mlflow.tensorflow.log_model(lin_reg_export, "model", signature=signature)
 
         remote_server_uri = "https://dagshub.com/ROCCYK/ANN_Assignment4.mlflow"
         mlflow.set_tracking_uri(remote_server_uri)
@@ -176,7 +176,7 @@ if __name__ == "__main__":
             # please refer to the doc for more information:
             # https://mlflow.org/docs/latest/model-registry.html#api-workflow
             mlflow.sklearn.log_model(
-                lin_reg_export, "model", registered_model_name="CaliHouseModel"
+                lin_reg, "model", registered_model_name="CaliHouseModel"
             )
         else:
-            mlflow.sklearn.log_model(lin_reg_export, "model")
+            mlflow.sklearn.log_model(lin_reg, "model")
