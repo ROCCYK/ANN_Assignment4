@@ -1,6 +1,7 @@
 # tensorflow 2.x core api
 import tensorflow as tf
 from sklearn.datasets import fetch_california_housing
+from urllib.parse import urlparse
 
 import mlflow
 from mlflow.models import infer_signature
@@ -175,7 +176,7 @@ if __name__ == "__main__":
             # please refer to the doc for more information:
             # https://mlflow.org/docs/latest/model-registry.html#api-workflow
             mlflow.sklearn.log_model(
-                lr, "model", registered_model_name="CaliHouseModel"
+                lin_reg_export, "model", registered_model_name="CaliHouseModel"
             )
         else:
-            mlflow.sklearn.log_model(lr, "model")
+            mlflow.sklearn.log_model(lin_reg_export, "model")
