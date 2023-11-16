@@ -155,28 +155,31 @@ if __name__ == "__main__":
         print(f"\nFinal train loss: {train_loss:0.3f}")
         print(f"Final test loss: {test_loss:0.3f}")
 
-        # # Export the tensorflow model
-        # lin_reg_export = ExportModule(model=lin_reg, norm_x=norm_x, norm_y=norm_y)
-        #
-        # # Infer model signature
-        # predictions = lin_reg_export(x_test)
-        # signature = infer_signature(x_test.numpy(), predictions.numpy())
-        #
-        # mlflow.tensorflow.log_model(lin_reg_export, "model", signature=signature)
-
         remote_server_uri = "https://dagshub.com/ROCCYK/ANN_Assignment4.mlflow"
         mlflow.set_tracking_uri(remote_server_uri)
 
-        tracking_url_type_store = urlparse(mlflow.get_tracking_uri()).scheme
+        # Export the tensorflow model
+        lin_reg_export = ExportModule(model=lin_reg, norm_x=norm_x, norm_y=norm_y)
 
-        # Model registry does not work with file store
-        if tracking_url_type_store != "file":
-            # Register the model
-            # There are other ways to use the Model Registry, which depends on the use case,
-            # please refer to the doc for more information:
-            # https://mlflow.org/docs/latest/model-registry.html#api-workflow
-            mlflow.sklearn.log_model(
-                lin_reg, "model", registered_model_name="CaliHouseModel"
-            )
-        else:
-            mlflow.sklearn.log_model(lin_reg, "model")
+        # Infer model signature
+        predictions = lin_reg_export(x_test)
+        signature = infer_signature(x_test.numpy(), predictions.numpy())
+
+        mlflow.tensorflow.log_model(lin_reg_export, "model", signature=signature, registered_model_name="CaliHouseModel")
+
+        # remote_server_uri = "https://dagshub.com/ROCCYK/ANN_Assignment4.mlflow"
+        # mlflow.set_tracking_uri(remote_server_uri)
+        #
+        # tracking_url_type_store = urlparse(mlflow.get_tracking_uri()).scheme
+        #
+        # # Model registry does not work with file store
+        # if tracking_url_type_store != "file":
+        #     # Register the model
+        #     # There are other ways to use the Model Registry, which depends on the use case,
+        #     # please refer to the doc for more information:
+        #     # https://mlflow.org/docs/latest/model-registry.html#api-workflow
+        #     mlflow.tensorflow.log_model(
+        #         lin_reg, "model", registered_model_name="CaliHouseModel"
+        #     )
+        # else:
+        #     mlflow.sklearn.log_model(lin_reg, "model")
