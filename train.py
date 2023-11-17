@@ -100,8 +100,8 @@ if __name__ == "__main__":
         test_dataset = test_dataset.shuffle(buffer_size=x_test.shape[0]).batch(batch_size)
 
         # Set training parameters
-        epochs = 1000
-        learning_rate = 0.001
+        epochs = 100
+        learning_rate = 0.01
         train_losses, test_losses = [], []
 
         # Format training loop
